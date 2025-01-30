@@ -36,7 +36,8 @@ L'objectif de cet exercice est d'identifier et d'exploiter les vulnérabilités 
 
 ## Découverte des vulnérabilités de la machine
 
-Nous avons commencé par scanner la machine cible avec <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour découvrir les services exposés et les ports ouverts :
+Nous avons commencé par scanner la machine cible avec <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour découvrir les services exposés et les ports ouverts.  
+<i>[nmap](https://www.kali.org/tools/nmap/)</i> est un outil qui permet de scanner le réseau dans le but d'identifier les ports ouverts, les services exposés et les systèmes d'exploitations des machines connectées sur le réseau.
 
 ```bash
 msf6 > nmap 192.168.0.0/24
@@ -61,7 +62,7 @@ Nmap done: 256 IP addresses (10 hosts up) scanned in 19.20 seconds
 
 Nous avons découvert deux services exposés : SSH sur le port 22 et HTTP sur le port 80.
 
-Nous avons ensuite utilisé <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour avoir plus de détails sur ces services.  
+Nous avons ensuite utilisé à nouveau <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour avoir plus de détails sur ces services.  
 Voici le détails des arguments que nous avons utilisé pour le scan :
 
 - Pn : Ignore la détection des hôtes (considère que l'hôte est actif, même s'il ne répond pas aux pings).
@@ -169,7 +170,8 @@ msf6 > nmap -Pn -O -A -sV -sS -sC -vv 192.168.0.75
 
 Nous avons découvert que la machine cible tourne sous Ubuntu 16.04 et qu'elle expose un serveur Apache 2.4.18.
 
-Nous avons ensuite scanné avec les scripts de <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour les vulnérabilités pour trouver des failles connues :
+Nous avons ensuite scanné avec les scripts de <i>[nmap](https://www.kali.org/tools/nmap/)</i> pour les vulnérabilités pour trouver des failles connues.  
+En effet <i>[nmap](https://www.kali.org/tools/nmap/)</i> dispose par défaut d'un outil de scripting en Lua, appelé Nmap Script Engine (ou NSE) qui permet d'augmenter significativement les tests effectués lors du scan d'une machine spécifique afin de découvrir les vulnérabilités dans le cas suivant.  
 Voici le détails des arguments que nous avons utilisé pour le scan :
 
 - script vuln : Exécute les scripts de vulnérabilité sur les ports ouverts.
@@ -751,7 +753,10 @@ Suite à la découverte du serveur web Apache, nous essayons d'accéder à la pa
 Nous découvrons que le serveur web héberge un site web :
 <img src="imgs/site.jpeg" width="800">
 
-On utilise <i>[dirb](https://www.kali.org/tools/dirb/)</i> pour scanner les répertoires du site web :
+On utilise <i>[dirb](https://www.kali.org/tools/dirb/)</i> pour scanner les répertoires du site web.  
+<i>[dirb](https://www.kali.org/tools/dirb/)</i> utilise une méthode de bruteforce pour chercher des répertoires et des fichiers sur un site web.  
+Il utilise une wordlist contenant des ressources et dossiers présents régulièrement sur des sites.  
+On l'utilise pour cartographier le site et trouver des ressources qui peuvent présenter des vulnérabilités et qui ne sont pas visibles ou accessibles directement sur le site.  
 
 ```bash
 ┌──(kali㉿kali)-[~]
@@ -882,7 +887,9 @@ END_TIME: Thu Jan 30 11:53:35 2025
 DOWNLOADED: 36896 - FOUND: 11
 ```
 
-On découvre alors que le répertoire `/assets/fonts/blog` contient un site web Wordpress. On utilise alors <i>[wpscan](https://wpscan.com/)</i> pour scanner les vulnérabilités du site web :
+On découvre alors que le répertoire `/assets/fonts/blog` contient un site web Wordpress. On utilise alors <i>[wpscan](https://wpscan.com/)</i> pour scanner les vulnérabilités du site web.  
+<i>[wpscan](https://wpscan.com/)</i> est un scanner spécialisé pour les sites réalisés avec [WordPress](https://wordpress.com/).  
+Il permet de détecter les thèmes et plugins utilisés sur le site, et les vulnérabilités qu'ils peuvent présenter.  
 
 ```bash
 ──(kali㉿kali)-[~]
